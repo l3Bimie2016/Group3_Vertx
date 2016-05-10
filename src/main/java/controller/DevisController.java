@@ -29,6 +29,19 @@ public class DevisController extends AbstractVerticle {
                     });
                 });
 
+        router.get("/devisHabitation")
+                .handler(req -> {
+                    req.getBodyAsJson();
+                    vertx.eventBus().send("devisHabitation", null, result -> {
+
+                        if(result.succeeded()) {
+                            req.response().end(result.result().body().toString());
+                        } else {
+                            req.response().end("-1");
+                        }
+                    });
+                });
+
 
         router.post("/devisVehicule")
                 .handler(req -> {
