@@ -8,6 +8,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import model.DevisHabitation;
 
+import javax.persistence.Transient;
 import java.util.Arrays;
 
 
@@ -24,22 +25,40 @@ public class DevisService  extends AbstractVerticle {
             DevisHabitation devisHabitation = Json.decodeValue(objectMessage.body().encode(), DevisHabitation.class);
 
             JsonArray params = new JsonArray();
-            params.add(devisHabitation.getNom());
-            params.add(devisHabitation.getPrenom());
-            params.add(devisHabitation.getNomDevis());
-            params.add(devisHabitation.getTypeHabitation());
-            params.add(devisHabitation.getSurface());
-            params.add(devisHabitation.getNombrePiece());
-            params.add(devisHabitation.getEtage());
-            params.add(devisHabitation.getNombreSalleBain());
-            params.add(devisHabitation.getGarage());
-            params.add(devisHabitation.getSurfaceTerrain());
-            params.add(devisHabitation.getSurfaceTerasse());
-            params.add(devisHabitation.getTypeChauffage());
-            params.add(devisHabitation.getResume());
-            params.add(devisHabitation.getFormule1());
-            params.add(devisHabitation.getFormule2());
-            params.add(devisHabitation.getPrix());
+
+            Arrays.stream(DevisHabitation.class.getDeclaredFields()).forEach(x -> {
+                try {
+                    if(x.getAnnotation(Transient.class) == null){
+                        x.setAccessible(true);
+                    Object object = x.get((devisHabitation));
+                        if(object != null) {
+                            params.add(x.get(devisHabitation));
+                        } else {
+                            params.add("NULL");
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+
+//                for (String string : devisHabitation.get )
+//            params.add(devisHabitation.getNom());
+//            params.add(devisHabitation.getPrenom());
+//            params.add(devisHabitation.getNomDevis());
+//            params.add(devisHabitation.getTypeHabitation());
+//            params.add(devisHabitation.getSurface());
+//            params.add(devisHabitation.getNombrePiece());
+//            params.add(devisHabitation.getEtage());
+//            params.add(devisHabitation.getNombreSalleBain());
+//            params.add(devisHabitation.getGarage());
+//            params.add(devisHabitation.getSurfaceTerrain());
+//            params.add(devisHabitation.getSurfaceTerasse());
+//            params.add(devisHabitation.getTypeChauffage());
+//            params.add(devisHabitation.getResume());
+//            params.add(devisHabitation.getFormule1());
+//            params.add(devisHabitation.getFormule2());
+//            params.add(devisHabitation.getPrix());
 
             String sql = "INSERT INTO `group3_vertx`.`devis_habitations`" +
                     "(`nom`," +

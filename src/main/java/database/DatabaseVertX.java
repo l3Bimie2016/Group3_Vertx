@@ -29,20 +29,16 @@ public class DatabaseVertX {
 
             mySQLClient.getConnection(res -> {
                 if (res.succeeded()) {
-//                    INSERT INTO `group3_vertx`.`devis_habitations`(`nom`,`prenom`,`nom_devis`,`type_habitation`,`surface`,`nombre_piece`,`etage`,`nombre_salle_bain`,`garage`,`surface_terrain`,`surface_terasse`,`type_chauffage`,`resume`,`formule_1`,`formule_2`,`prix`)VALUES("test","test","test","test",123,3,2,2,1,123 ,123,"test","test","test","test",123);
                     SQLConnection connection = res.result();
                     System.out.println("OK");
                     connection.updateWithParams(sql,params,x ->{
                         if (x.succeeded()){
-                            callBack.handle(Future.succeededFuture(x.result().getUpdated()));
+                            callBack.handle(Future.succeededFuture(1));
                         } else {
-                            System.out.println("failedFuture");
                             callBack.handle(Future.failedFuture(x.cause()));
                         }
-
                     } );
                     // Got a connection
-
                 } else {
                     callBack.handle(Future.failedFuture(res.cause()));
                     System.out.println("Error connection");
