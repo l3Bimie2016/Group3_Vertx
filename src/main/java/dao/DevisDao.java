@@ -6,7 +6,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.SQLConnection;
 
 /**
- * Created by luffy on 05/04/16.
+ * Created by axel on 05/04/16.
  */
 public class DevisDao extends AbstractVerticle {
 

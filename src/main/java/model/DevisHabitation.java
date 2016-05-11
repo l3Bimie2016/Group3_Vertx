@@ -1,36 +1,55 @@
 package model;
 
-import javax.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * Created by Axel on 09/05/2016.
  */
 public class DevisHabitation {
 
-
+    @JsonProperty("id_devis_habitations")
+    private Integer idDevisHabitations;
+    @JsonProperty("id_user")
+    private Integer idUser;
     private String nom;
     private String prenom;
-    @Column(name="nom_devis")
+    @JsonProperty("nom_devis")
     private String nomDevis;
-    @Column(name="type_habitation")
+    @JsonProperty("type_habitation")
     private String typeHabitation;
     private Integer surface;
-    @Column(name="nombre_piece")
+    @JsonProperty("nombre_piece")
     private Integer nombrePiece;
     private Integer etage;
-    @Column(name="nombre_salle_bain")
+    @JsonProperty("nombre_salle_bain")
     private Integer nombreSalleBain;
     private Integer garage;
-    @Column(name="surface_terrain")
+    @JsonProperty("surface_terrain")
     private Integer surfaceTerrain;
-    @Column(name="surface_terrase")
-    private Integer surfaceTerasse;
-    @Column(name="type_chauffage")
+    @JsonProperty("surface_terrasse")
+    private Integer surfaceTerrasse;
+    @JsonProperty("type_chauffage")
     private String typeChauffage;
-    private String resume;
-    private String formule1;
-    private String formule2;
+    private String formule;
     private Integer prix;
+
+
+    public Integer getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Integer idUser) {
+        this.idUser = idUser;
+    }
+
+    public Integer getIdDevisHabitations() {
+        return idDevisHabitations;
+    }
+
+    public void setIdDevisHabitations(Integer idDevisHabitations) {
+        this.idDevisHabitations = idDevisHabitations;
+    }
 
     public String getNom() {
         return nom;
@@ -112,12 +131,12 @@ public class DevisHabitation {
         this.surfaceTerrain = surfaceTerrain;
     }
 
-    public Integer getSurfaceTerasse() {
-        return surfaceTerasse;
+    public Integer getSurfaceTerrasse() {
+        return surfaceTerrasse;
     }
 
-    public void setSurfaceTerasse(Integer surfaceTerasse) {
-        this.surfaceTerasse = surfaceTerasse;
+    public void setSurfaceTerrasse(Integer surfaceTerrasse) {
+        this.surfaceTerrasse = surfaceTerrasse;
     }
 
     public String getTypeChauffage() {
@@ -128,28 +147,12 @@ public class DevisHabitation {
         this.typeChauffage = typeChauffage;
     }
 
-    public String getResume() {
-        return resume;
+    public String getFormule() {
+        return formule;
     }
 
-    public void setResume(String resume) {
-        this.resume = resume;
-    }
-
-    public String getFormule1() {
-        return formule1;
-    }
-
-    public void setFormule1(String formule1) {
-        this.formule1 = formule1;
-    }
-
-    public String getFormule2() {
-        return formule2;
-    }
-
-    public void setFormule2(String formule2) {
-        this.formule2 = formule2;
+    public void setFormule(String formule) {
+        this.formule = formule;
     }
 
     public Integer getPrix() {

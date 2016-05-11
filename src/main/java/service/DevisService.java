@@ -7,6 +7,7 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import model.DevisHabitation;
+import model.DevisVehicule;
 
 import javax.persistence.Transient;
 import java.util.Arrays;
@@ -15,51 +16,29 @@ import java.util.Arrays;
 /**
  * Created by Axel on 09/05/2016.
  */
-public class DevisService  extends AbstractVerticle {
+public class DevisService extends AbstractVerticle {
 
     @Override
     public void start() throws Exception {
 
-        vertx.eventBus().consumer("devisHabitation", (Message<JsonObject> objectMessage) -> {
-            System.out.println(objectMessage.body().getString("nom"));
-            DevisHabitation devisHabitation = Json.decodeValue(objectMessage.body().encode(), DevisHabitation.class);
+        vertx.eventBus().consumer("devisHabitationPost", (Message<JsonObject> objectMessage) -> {
 
             JsonArray params = new JsonArray();
 
+            DevisHabitation devisHabitation = Json.decodeValue(objectMessage.body().encode(), DevisHabitation.class);
             Arrays.stream(DevisHabitation.class.getDeclaredFields()).forEach(x -> {
                 try {
-                    if(x.getAnnotation(Transient.class) == null){
+                    if (x.getAnnotation(Transient.class) == null) {
                         x.setAccessible(true);
-                    Object object = x.get((devisHabitation));
-                        if(object != null) {
+                        Object object = x.get((devisHabitation));
+                        if (object != null ) {
                             params.add(x.get(devisHabitation));
-                        } else {
-                            params.add("NULL");
                         }
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             });
-
-//                for (String string : devisHabitation.get )
-//            params.add(devisHabitation.getNom());
-//            params.add(devisHabitation.getPrenom());
-//            params.add(devisHabitation.getNomDevis());
-//            params.add(devisHabitation.getTypeHabitation());
-//            params.add(devisHabitation.getSurface());
-//            params.add(devisHabitation.getNombrePiece());
-//            params.add(devisHabitation.getEtage());
-//            params.add(devisHabitation.getNombreSalleBain());
-//            params.add(devisHabitation.getGarage());
-//            params.add(devisHabitation.getSurfaceTerrain());
-//            params.add(devisHabitation.getSurfaceTerasse());
-//            params.add(devisHabitation.getTypeChauffage());
-//            params.add(devisHabitation.getResume());
-//            params.add(devisHabitation.getFormule1());
-//            params.add(devisHabitation.getFormule2());
-//            params.add(devisHabitation.getPrix());
-
             String sql = "INSERT INTO `group3_vertx`.`devis_habitations`" +
                     "(`nom`," +
                     "`prenom`," +
@@ -71,34 +50,80 @@ public class DevisService  extends AbstractVerticle {
                     "`nombre_salle_bain`," +
                     "`garage`," +
                     "`surface_terrain`," +
-                    "`surface_terasse`," +
+                    "`surface_terrasse`," +
                     "`type_chauffage`," +
-                    "`resume`," +
-                    "`formule_1`," +
-                    "`formule_2`," +
+                    "`formule`," +
                     "`prix`)" +
                     "VALUES" +
-                    "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-            DatabaseVertX.setDevisHabitation(sql,params,r -> {
+                    "(?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+            DatabaseVertX.setDevisHabitationAndVehicule(sql, params, r -> {
                 objectMessage.reply(r.result());
-//                objectMessage.reply(new JsonArray(Arrays.asList(r.result())));
-
             });
-
         });
 
-//        vertx.eventBus().consumer("devisHabitation", (Message<JsonObject> objectMessage) -> {
-//
-//            String sql ="SELECT * FROM devis_habitations"
-//
-//            DatabaseVertX.getDevisHabitations(sql,r -> {
-//                objectMessage.reply(
-//                );
-//
-//            });
-//
-//        });
+        vertx.eventBus().consumer("devisHabitationGet", (Message<JsonObject> objectMessage) -> {
+
+            String sql = "SELECT * FROM devis_habitations";
+
+            DatabaseVertX.getDevisHabitations(sql, r -> {
+                objectMessage.reply(Json.encode(r.result()));
+
+            });
+        });
+
+
+        vertx.eventBus().consumer("devisVehiculePost", (Message<JsonObject> objectMessage) -> {
+
+            JsonArray params = new JsonArray();
+
+            DevisVehicule devisVehicule = Json.decodeValue(objectMessage.body().encode(), DevisVehicule.class);
+            Arrays.stream(DevisVehicule.class.getDeclaredFields()).forEach(x -> {
+                try {
+                    if (x.getAnnotation(Transient.class) == null) {
+                        x.setAccessible(true);
+                        Object object = x.get((devisVehicule));
+                        if (object != null ) {
+                            params.add(x.get(devisVehicule));
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            String sql = "INSERT INTO `group3_vertx`.`devis_vehicule`" +
+                    "(`nom`," +
+                    "`prenom`," +
+                    "`nom_devis`," +
+                    "`marque`," +
+                    "`modele`," +
+                    "`carburant`," +
+                    "`chevaux`," +
+                    "`date_permis`," +
+                    "`bonus_malus`," +
+                    "`conducteur_principal`," +
+                    "`conducteur_secondaire`," +
+                    "`dors_garage`," +
+                    "`adresse`," +
+                    "`resume_devis`," +
+                    "`tous_risques`," +
+                    "`au_tier`)" +
+                    "`montant_devis`)" +
+                    "VALUES" +
+                    "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+            DatabaseVertX.setDevisHabitationAndVehicule(sql, params, r -> {
+                objectMessage.reply(r.result());
+            });
+        });
+
+        vertx.eventBus().consumer("devisVehiculeGet", (Message<JsonObject> objectMessage) -> {
+
+            String sql = "SELECT * FROM devis_vehicule";
+
+            DatabaseVertX.getDevisVehicule(sql, r -> {
+                objectMessage.reply(Json.encode(r.result()));
+
+            });
+        });
     }
-
-
 }

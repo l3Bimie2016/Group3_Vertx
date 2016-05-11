@@ -5,7 +5,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
 /**
- * Created by luffy on 05/04/16.
+ * Created by axel on 05/04/16.
  */
 public class DevisController extends AbstractVerticle {
 
@@ -19,9 +19,9 @@ public class DevisController extends AbstractVerticle {
         router.post("/devisHabitation")
                 .handler(req -> {
                     req.getBodyAsJson();
-                    vertx.eventBus().send("devisHabitation", req.getBodyAsJson(), result -> {
+                    vertx.eventBus().send("devisHabitationPost", req.getBodyAsJson(), result -> {
 
-                        if(result.succeeded()) {
+                        if (result.succeeded()) {
                             req.response().end(result.result().body().toString());
                         } else {
                             req.response().end("-1");
@@ -31,10 +31,9 @@ public class DevisController extends AbstractVerticle {
 
         router.get("/devisHabitation")
                 .handler(req -> {
-                    req.getBodyAsJson();
-                    vertx.eventBus().send("devisHabitation", null, result -> {
-
-                        if(result.succeeded()) {
+                    vertx.eventBus().send("devisHabitationGet", null, result -> {
+                        if (result.succeeded()) {
+                            req.response().headers().add("content-type", "application/json");
                             req.response().end(result.result().body().toString());
                         } else {
                             req.response().end("-1");
@@ -46,9 +45,21 @@ public class DevisController extends AbstractVerticle {
         router.post("/devisVehicule")
                 .handler(req -> {
                     req.getBodyAsJson();
-                    vertx.eventBus().send("devisVehicule", req.getBodyAsJson(), result -> {
+                    vertx.eventBus().send("devisVehiculePost", req.getBodyAsJson(), result -> {
 
-                        if(result.succeeded()) {
+                        if (result.succeeded()) {
+                            req.response().end(result.result().body().toString());
+                        } else {
+                            req.response().end("-1");
+                        }
+                    });
+                });
+
+        router.get("/devisVehicule")
+                .handler(req -> {
+                    vertx.eventBus().send("devisVehiculeGet", null, result -> {
+                        if (result.succeeded()) {
+                            req.response().headers().add("content-type", "application/json");
                             req.response().end(result.result().body().toString());
                         } else {
                             req.response().end("-1");
