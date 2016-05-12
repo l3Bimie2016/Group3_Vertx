@@ -10,18 +10,28 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.asyncsql.AsyncSQLClient;
 import io.vertx.ext.asyncsql.MySQLClient;
 import io.vertx.ext.sql.SQLConnection;
-import model.DevisHabitation;
-import model.DevisVehicule;
+import dto.DevisHabitation;
+import dto.DevisVehicule;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 /**
+ *
+ * Vertx Dao
+ *
  * Created by Axel on 09/05/2016.
  */
 public class DatabaseVertX {
 
+
+    /**
+     * This function allow to create one devisHabitation or devisVehicule
+     * @param sql
+     * @param params
+     * @param callBack
+     */
     public static void setDevisHabitationAndVehicule(String sql, JsonArray params, Handler<AsyncResult<Integer>> callBack) {
 
 
@@ -50,6 +60,11 @@ public class DatabaseVertX {
         });
     }
 
+    /**
+     * This function allow to get all devisHabitations
+     * @param sql
+     * @param callBack
+     */
     public static void getDevisHabitations(String sql, Handler<AsyncResult<List<DevisHabitation>>> callBack) {
 
         Vertx.currentContext().owner().runOnContext(c -> {
@@ -72,7 +87,7 @@ public class DatabaseVertX {
                             callBack.handle(Future.failedFuture(x.cause()));
                         }
                     });
-                    // Got a connection
+                    // Got a
                 } else {
                     callBack.handle(Future.failedFuture(res.cause()));
                     System.out.println("Error connection");
@@ -81,6 +96,11 @@ public class DatabaseVertX {
         });
     }
 
+    /**
+     * This function allow to get all devisVehicule
+     * @param sql
+     * @param callBack
+     */
     public static void getDevisVehicule(String sql, Handler<AsyncResult<List<DevisVehicule>>> callBack) {
 
         Vertx.currentContext().owner().runOnContext(c -> {

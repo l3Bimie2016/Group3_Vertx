@@ -1,10 +1,11 @@
-package model;
+package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 /**
+ * Devis vehicule Dto
  * Created by Axel on 11/05/2016.
  */
 public class DevisVehicule {

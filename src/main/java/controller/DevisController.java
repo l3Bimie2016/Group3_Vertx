@@ -5,6 +5,10 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
 /**
+ * Vertx Controller
+ *
+ * This class is a endpoint class.
+ *
  * Created by axel on 05/04/16.
  */
 public class DevisController extends AbstractVerticle {

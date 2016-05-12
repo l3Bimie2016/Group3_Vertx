@@ -1,9 +1,11 @@
-package model;
+package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
+ * Devis habitation Dto
+ *
  * Created by Axel on 09/05/2016.
  */
 public class DevisHabitation {

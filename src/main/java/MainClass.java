@@ -2,6 +2,8 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 
 /**
+ *
+ * VertX main class
  * Created by axel on 05/04/16.
  */
 public class MainClass extends AbstractVerticle {

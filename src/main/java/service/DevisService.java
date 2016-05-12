@@ -6,14 +6,16 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import model.DevisHabitation;
-import model.DevisVehicule;
+import dto.DevisHabitation;
+import dto.DevisVehicule;
 
 import javax.persistence.Transient;
 import java.util.Arrays;
 
 
 /**
+ * VertX service which create sql request to send at the dao.
+ *
  * Created by Axel on 09/05/2016.
  */
 public class DevisService extends AbstractVerticle {
